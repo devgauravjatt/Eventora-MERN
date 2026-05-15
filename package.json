@@ -1,21 +1,24 @@
 {
-	"name": "eventora",
-	"description": "Root scripts for Eventora client and server",
-	"private": true,
-	"version": "1.0.0",
-	"packageManager": "pnpm@11.1.2",
-	"scripts": {
-		"dev": "pnpm -r --parallel dev",
-		"dev:server": "pnpm --filter server dev",
-		"dev:client": "pnpm --filter client dev",
-		"build": "pnpm -r build",
-		"build:server": "pnpm --filter server build",
-		"build:client": "pnpm --filter client build",
-		"start": "pnpm -r start",
-		"start:server": "pnpm --filter server start",
-		"start:client": "pnpm --filter client start",
-		"lint": "pnpm -r lint",
-		"format": "pnpm -r format",
-		"seed": "pnpm --filter server seed"
-	}
+  "name": "eventora",
+  "description": "Root scripts for Eventora client and server",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@11.1.2",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "dev:server": "pnpm --filter server dev",
+    "dev:client": "pnpm --filter client dev",
+    "build": "pnpm -r build",
+    "build:server": "pnpm --filter server build",
+    "build:client": "pnpm --filter client build",
+    "start": "pnpm -r start",
+    "start:server": "pnpm --filter server start",
+    "start:client": "pnpm --filter client start",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format && prettier --write .",
+    "seed": "pnpm --filter server seed"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
+  }
 }
