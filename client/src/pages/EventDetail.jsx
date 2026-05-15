@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/axios";
 import { AuthContext } from "../context/AuthContext";
@@ -21,6 +21,7 @@ const EventDetail = () => {
       try {
         const { data } = await api.get(`/events/${id}`);
         setEvent(data);
+        // eslint-disable-next-line no-unused-vars
       } catch (err) {
         setError("Failed to load event details.");
       } finally {

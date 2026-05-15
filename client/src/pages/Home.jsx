@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../utils/axios";
 import { FaCalendarAlt, FaMapMarkerAlt, FaSearch, FaRegClock, FaTicketAlt, FaShieldAlt } from "react-icons/fa";
@@ -9,22 +9,22 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const { data } = await api.get(`/events?search=${search}`);
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const timeoutId = setTimeout(() => {
       fetchEvents();
     }, 400); // 400ms debounce
     return () => clearTimeout(timeoutId);
   }, [search]);
-
-  const fetchEvents = async () => {
-    try {
-      const { data } = await api.get(`/events?search=${search}`);
-      setEvents(data);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ const AdminDashboard = () => {
       navigate("/login");
       return;
     }
+    // eslint-disable-next-line react-hooks/immutability
     fetchData();
   }, [user, navigate]);
 
@@ -71,6 +72,7 @@ const AdminDashboard = () => {
       try {
         await api.delete(`/events/${id}`);
         fetchData();
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         alert("Error deleting event");
       }

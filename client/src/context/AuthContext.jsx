@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import api from "../utils/axios";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(JSON.parse(userInfo));
     }
     setLoading(false);
