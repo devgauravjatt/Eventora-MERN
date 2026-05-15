@@ -1,23 +1,21 @@
 {
-  "name": "eventora",
-  "private": true,
-  "version": "1.0.0",
-  "description": "Root scripts for Eventora client and server",
-  "scripts": {
-    "install:all": "npm install --prefix server --legacy-peer-deps && npm install --prefix client",
-    "dev:server": "npm run dev --prefix server",
-    "dev:client": "npm run dev --prefix client",
-    "dev": "concurrently -n server,client -c blue,green \"npm run dev:server\" \"npm run dev:client\"",
-    "start:server": "npm run start --prefix server",
-    "start:client": "npm run preview --prefix client",
-    "start": "concurrently -n server,client -c blue,green \"npm run start:server\" \"npm run start:client\"",
-    "build": "npm run build --prefix client",
-    "lint": "npm run lint --prefix client",
-    "setup": "npm run install:all",
-    "dev:all": "npm run install:all && npm run dev",
-    "start:all": "npm run install:all && npm run start"
-  },
-  "devDependencies": {
-    "concurrently": "^9.0.1"
-  }
+	"name": "eventora",
+	"description": "Root scripts for Eventora client and server",
+	"private": true,
+	"version": "1.0.0",
+	"packageManager": "pnpm@11.1.2",
+	"scripts": {
+		"dev": "pnpm -r --parallel dev",
+		"dev:server": "pnpm --filter server dev",
+		"dev:client": "pnpm --filter client dev",
+		"build": "pnpm -r build",
+		"build:server": "pnpm --filter server build",
+		"build:client": "pnpm --filter client build",
+		"start": "pnpm -r start",
+		"start:server": "pnpm --filter server start",
+		"start:client": "pnpm --filter client start",
+		"lint": "pnpm -r lint",
+		"format": "pnpm -r format",
+		"seed": "pnpm --filter server seed"
+	}
 }
