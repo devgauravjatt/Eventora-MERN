@@ -21,6 +21,7 @@ exports.sendBookingOTP = async (req, res) => {
 exports.bookEvent = async (req, res) => {
     try {
         const { eventId, otp } = req.body;
+        console.log('🚀 ~ eventId, otp :- ', eventId, otp);
 
         // Verify OTP explicitly before proceeding
         const validOTP = await OTP.findOne({ email: req.user.email, otp, action: 'event_booking' });
@@ -37,7 +38,8 @@ exports.bookEvent = async (req, res) => {
             return res.status(400).json({ message: 'Already booked or pending' });
         }
 
-        const payment = await Payment.findOne({ userId: req.user.id, eventId });
+        const payment = await Payment.findOne({ userId: req.user.id, eventId: eventId });
+        console.log('🚀 ~ payment :- ', payment);
         if (!payment) return res.status(404).json({ message: 'Payment not found' });
         if (payment.status !== 'completed') return res.status(400).json({ message: 'Payment not completed' });
 

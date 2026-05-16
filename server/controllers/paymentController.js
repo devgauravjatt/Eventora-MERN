@@ -1,6 +1,8 @@
 const crypto = require('node:crypto');
 const { razorpay } = require('../utils/razorpay.js');
-const { Payment } = require('../models/Payment.js');
+const Payment = require('../models/Payment.js');
+const Event = require('../models/Event.js');
+const Booking = require('../models/Booking.js');
 
 exports.createOrder = async (req, res) => {
     try {
@@ -9,17 +11,31 @@ exports.createOrder = async (req, res) => {
         const userId = req.user.id;
 
         if (!eventId) {
-            res.status(400).json({ error: 'Invalid request body' });
-            return;
+            return res.status(400).json({ error: 'Invalid request body' });
         }
         const event = await Event.findById(eventId);
         if (!event) {
             return res.status(404).json({ error: 'Event not found' });
         }
-        const { ticketPrice } = event;
+
+        if (event.availableSeats <= 0) {
+            return res.status(400).json({ error: 'Event is sold out' });
+        }
+
+        // check if the user already has a booking for this event
+        const existingBooking = await Booking.findOne({ userId, eventId });
+        if (existingBooking) {
+            return res.status(200).json({ code: 'ALREADY_BOOKED', error: 'You have already booked this event' });
+        }
+
+        const existingPayment = await Payment.findOne({ userId, eventId });
+        console.log('🚀 ~ existingPayment :- ', existingPayment);
+        if (existingPayment && existingPayment.status === 'completed') {
+            return res.status(200).json({ code: 'ALREADY_PAID', error: 'You have already paid for this event' });
+        }
 
         const options = {
-            amount: ticketPrice * 100, // Razorpay expects amount in paise
+            amount: event.ticketPrice * 100, // Razorpay expects amount in paise
             currency: 'INR',
             receipt: `receipt_${Date.now()}`
         };
