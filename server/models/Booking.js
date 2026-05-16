@@ -6,6 +6,7 @@ const bookingSchema = new mongoose.Schema(
         eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
         status: { type: String, enum: ['confirmed', 'cancelled', 'pending'], default: 'pending' },
         paymentStatus: { type: String, enum: ['paid', 'not_paid'], default: 'not_paid' },
+        paymentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
         amount: { type: Number, required: true },
         bookedAt: { type: Date, default: Date.now }
     },

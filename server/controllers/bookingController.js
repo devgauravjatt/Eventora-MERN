@@ -1,6 +1,7 @@
 const Booking = require('../models/Booking');
 const Event = require('../models/Event');
 const OTP = require('../models/OTP');
+const Payment = require('../models/Payment');
 const { sendBookingEmail, sendOTPEmail } = require('../utils/email');
 
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -36,12 +37,17 @@ exports.bookEvent = async (req, res) => {
             return res.status(400).json({ message: 'Already booked or pending' });
         }
 
+        const payment = await Payment.findOne({ userId: req.user.id, eventId });
+        if (!payment) return res.status(404).json({ message: 'Payment not found' });
+        if (payment.status !== 'completed') return res.status(400).json({ message: 'Payment not completed' });
+
         const booking = await Booking.create({
             userId: req.user.id,
             eventId,
             status: 'pending',
-            paymentStatus: 'not_paid',
-            amount: event.ticketPrice
+            paymentStatus: 'paid',
+            amount: event.ticketPrice,
+            paymentId: payment._id
         });
 
         await OTP.deleteOne({ _id: validOTP._id }); // cleanup
